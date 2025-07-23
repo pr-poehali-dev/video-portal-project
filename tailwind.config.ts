@@ -32,6 +32,10 @@ export default {
 					DEFAULT: 'hsl(var(--secondary))',
 					foreground: 'hsl(var(--secondary-foreground))'
 				},
+				'video-pink': '#FF0050',
+				'video-blue': '#00F5FF',
+				'video-dark': '#1A1A1A',
+				'video-gray': '#6B7280',
 				destructive: {
 					DEFAULT: 'hsl(var(--destructive))',
 					foreground: 'hsl(var(--destructive-foreground))'

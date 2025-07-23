@@ -1,12 +1,342 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import Icon from "@/components/ui/icon";
 
 const Index = () => {
+  const trendingVideos = [
+    {
+      id: 1,
+      thumbnail: "/img/c2050e9f-e7b5-4dd2-90f3-31223195a24e.jpg",
+      title: "Крутой TikTok Challenge 2024",
+      author: "CreativeStudio",
+      avatar: "/img/d69eef61-20c6-41a3-bf87-685c09b80384.jpg",
+      views: "2.1M",
+      duration: "0:15",
+      likes: "150K"
+    },
+    {
+      id: 2,
+      thumbnail: "/img/c2050e9f-e7b5-4dd2-90f3-31223195a24e.jpg",
+      title: "YouTube обзор новых технологий",
+      author: "TechReview",
+      avatar: "/img/d69eef61-20c6-41a3-bf87-685c09b80384.jpg",
+      views: "890K",
+      duration: "12:34",
+      likes: "45K"
+    },
+    {
+      id: 3,
+      thumbnail: "/img/c2050e9f-e7b5-4dd2-90f3-31223195a24e.jpg",
+      title: "Вирусный контент дня",
+      author: "ViralHub",
+      avatar: "/img/d69eef61-20c6-41a3-bf87-685c09b80384.jpg",
+      views: "3.5M",
+      duration: "0:30",
+      likes: "280K"
+    },
+    {
+      id: 4,
+      thumbnail: "/img/c2050e9f-e7b5-4dd2-90f3-31223195a24e.jpg",
+      title: "Эксклюзивное интервью",
+      author: "ExclusiveMedia",
+      avatar: "/img/d69eef61-20c6-41a3-bf87-685c09b80384.jpg",
+      views: "1.2M",
+      duration: "8:45",
+      likes: "92K"
+    }
+  ];
+
+  const categories = [
+    { name: "Тренды", icon: "TrendingUp", active: true },
+    { name: "Музыка", icon: "Music" },
+    { name: "Игры", icon: "Gamepad2" },
+    { name: "Образование", icon: "BookOpen" },
+    { name: "Спорт", icon: "Trophy" },
+    { name: "Технологии", icon: "Smartphone" }
+  ];
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4 color-black text-black">Добро пожаловать!</h1>
-        <p className="text-xl text-gray-600">тут будет отображаться ваш проект</p>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-gray-100">
+      {/* Header */}
+      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            {/* Logo */}
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 video-gradient rounded-xl flex items-center justify-center">
+                <Icon name="Play" size={20} className="text-white ml-1" />
+              </div>
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-video-pink to-video-blue bg-clip-text text-transparent">
+                VideoHub
+              </h1>
+            </div>
+
+            {/* Search */}
+            <div className="flex-1 max-w-2xl mx-8">
+              <div className="relative">
+                <Input
+                  placeholder="Поиск видео, авторов, трендов..."
+                  className="w-full pl-12 pr-4 py-3 rounded-full border-2 border-gray-200 focus:border-video-pink transition-colors"
+                />
+                <Icon name="Search" size={20} className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div className="flex items-center space-x-4">
+              <Button className="video-gradient text-white font-semibold px-6 py-2 rounded-full hover:opacity-90 transition-opacity">
+                <Icon name="Plus" size={18} className="mr-2" />
+                Создать
+              </Button>
+              <Avatar className="w-10 h-10 ring-2 ring-video-pink/20">
+                <AvatarImage src="/img/d69eef61-20c6-41a3-bf87-685c09b80384.jpg" />
+                <AvatarFallback>Я</AvatarFallback>
+              </Avatar>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex gap-8">
+          {/* Sidebar */}
+          <aside className="w-64 space-y-6">
+            {/* Navigation */}
+            <Card className="p-6">
+              <nav className="space-y-3">
+                <a href="#" className="flex items-center space-x-3 p-3 rounded-lg bg-video-pink/10 text-video-pink font-medium">
+                  <Icon name="Home" size={20} />
+                  <span>Главная</span>
+                </a>
+                <a href="#" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors">
+                  <Icon name="TrendingUp" size={20} />
+                  <span>Тренды</span>
+                </a>
+                <a href="#" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors">
+                  <Icon name="Users" size={20} />
+                  <span>Подписки</span>
+                </a>
+                <a href="#" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors">
+                  <Icon name="Heart" size={20} />
+                  <span>Понравившиеся</span>
+                </a>
+                <a href="#" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors">
+                  <Icon name="Clock" size={20} />
+                  <span>История</span>
+                </a>
+                <a href="#" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors">
+                  <Icon name="User" size={20} />
+                  <span>Мой канал</span>
+                </a>
+              </nav>
+            </Card>
+
+            {/* Categories */}
+            <Card className="p-6">
+              <h3 className="font-semibold text-gray-900 mb-4">Категории</h3>
+              <div className="space-y-2">
+                {categories.map((category, index) => (
+                  <button
+                    key={index}
+                    className={`flex items-center space-x-3 w-full p-2 rounded-lg text-left transition-colors ${
+                      category.active
+                        ? 'bg-video-blue/10 text-video-blue font-medium'
+                        : 'hover:bg-gray-100'
+                    }`}
+                  >
+                    <Icon name={category.icon} size={18} />
+                    <span>{category.name}</span>
+                  </button>
+                ))}
+              </div>
+            </Card>
+          </aside>
+
+          {/* Main Content */}
+          <main className="flex-1 space-y-8">
+            {/* Hero Section */}
+            <div className="video-gradient rounded-3xl p-8 text-white relative overflow-hidden">
+              <div className="relative z-10">
+                <h2 className="text-4xl font-bold mb-4">
+                  Создавай. Делись. Вдохновляй.
+                </h2>
+                <p className="text-xl mb-6 opacity-90">
+                  Платформа для миллионов видео из TikTok, YouTube и собственного контента
+                </p>
+                <div className="flex space-x-4">
+                  <Button className="bg-white text-video-pink font-semibold px-8 py-3 rounded-full hover:bg-gray-100 transition-colors">
+                    <Icon name="Upload" size={20} className="mr-2" />
+                    Загрузить видео
+                  </Button>
+                  <Button variant="outline" className="border-white text-white font-semibold px-8 py-3 rounded-full hover:bg-white/10 transition-colors">
+                    <Icon name="Play" size={20} className="mr-2" />
+                    Смотреть тренды
+                  </Button>
+                </div>
+              </div>
+              <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-32 translate-x-32"></div>
+              <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full translate-y-24 -translate-x-24"></div>
+            </div>
+
+            {/* Trending Videos */}
+            <section>
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold text-gray-900">🔥 Трендовые видео</h2>
+                <Button variant="outline" className="font-medium">
+                  Смотреть все
+                  <Icon name="ArrowRight" size={16} className="ml-2" />
+                </Button>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+                {trendingVideos.map((video) => (
+                  <Card key={video.id} className="video-card-hover cursor-pointer group">
+                    <div className="relative overflow-hidden rounded-t-lg">
+                      <img
+                        src={video.thumbnail}
+                        alt={video.title}
+                        className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                      <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <div className="w-16 h-16 video-gradient rounded-full flex items-center justify-center">
+                          <Icon name="Play" size={24} className="text-white ml-1" />
+                        </div>
+                      </div>
+                      <Badge className="absolute top-3 right-3 bg-black/70 text-white border-0">
+                        {video.duration}
+                      </Badge>
+                    </div>
+                    <CardContent className="p-4">
+                      <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-video-pink transition-colors">
+                        {video.title}
+                      </h3>
+                      <div className="flex items-center space-x-3 mb-3">
+                        <Avatar className="w-8 h-8">
+                          <AvatarImage src={video.avatar} />
+                          <AvatarFallback>{video.author[0]}</AvatarFallback>
+                        </Avatar>
+                        <span className="text-sm font-medium text-gray-700">{video.author}</span>
+                      </div>
+                      <div className="flex items-center justify-between text-sm text-gray-500">
+                        <div className="flex items-center space-x-4">
+                          <span className="flex items-center">
+                            <Icon name="Eye" size={14} className="mr-1" />
+                            {video.views}
+                          </span>
+                          <span className="flex items-center">
+                            <Icon name="Heart" size={14} className="mr-1" />
+                            {video.likes}
+                          </span>
+                        </div>
+                        <div className="flex space-x-2">
+                          <Button size="sm" variant="ghost" className="text-gray-500 hover:text-video-pink">
+                            <Icon name="Share2" size={14} />
+                          </Button>
+                          <Button size="sm" variant="ghost" className="text-gray-500 hover:text-video-pink">
+                            <Icon name="Bookmark" size={14} />
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </section>
+
+            {/* Upload Section */}
+            <Card className="p-8 border-2 border-dashed border-gray-300 bg-gray-50/50">
+              <div className="text-center">
+                <div className="w-16 h-16 video-gradient rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Icon name="Upload" size={24} className="text-white" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  Загрузите своё первое видео
+                </h3>
+                <p className="text-gray-600 mb-6 max-w-md mx-auto">
+                  Поделитесь своим творчеством с миллионами зрителей. Поддерживаются форматы MP4, MOV, AVI
+                </p>
+                <div className="flex justify-center space-x-4">
+                  <Button className="video-gradient text-white font-semibold px-8 py-3 rounded-full">
+                    <Icon name="Upload" size={18} className="mr-2" />
+                    Выбрать файл
+                  </Button>
+                  <Button variant="outline" className="font-medium px-8 py-3 rounded-full">
+                    <Icon name="Video" size={18} className="mr-2" />
+                    Записать видео
+                  </Button>
+                </div>
+              </div>
+            </Card>
+          </main>
+        </div>
       </div>
+
+      {/* Footer */}
+      <footer className="bg-white border-t border-gray-200 mt-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="w-8 h-8 video-gradient rounded-lg flex items-center justify-center">
+                  <Icon name="Play" size={16} className="text-white ml-0.5" />
+                </div>
+                <h3 className="text-lg font-bold bg-gradient-to-r from-video-pink to-video-blue bg-clip-text text-transparent">
+                  VideoHub
+                </h3>
+              </div>
+              <p className="text-gray-600 text-sm">
+                Платформа для создания, обмена и просмотра видеоконтента с защищённым кодом и открытым исходным кодом.
+              </p>
+            </div>
+            <div>
+              <h4 className="font-semibold text-gray-900 mb-3">Создателям</h4>
+              <ul className="space-y-2 text-sm text-gray-600">
+                <li><a href="#" className="hover:text-video-pink transition-colors">Загрузить видео</a></li>
+                <li><a href="#" className="hover:text-video-pink transition-colors">Аналитика</a></li>
+                <li><a href="#" className="hover:text-video-pink transition-colors">Монетизация</a></li>
+                <li><a href="#" className="hover:text-video-pink transition-colors">Сообщество</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold text-gray-900 mb-3">Зрителям</h4>
+              <ul className="space-y-2 text-sm text-gray-600">
+                <li><a href="#" className="hover:text-video-pink transition-colors">Тренды</a></li>
+                <li><a href="#" className="hover:text-video-pink transition-colors">Подписки</a></li>
+                <li><a href="#" className="hover:text-video-pink transition-colors">Плейлисты</a></li>
+                <li><a href="#" className="hover:text-video-pink transition-colors">Рекомендации</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold text-gray-900 mb-3">Безопасность</h4>
+              <ul className="space-y-2 text-sm text-gray-600">
+                <li><a href="#" className="hover:text-video-pink transition-colors">Защита данных</a></li>
+                <li><a href="#" className="hover:text-video-pink transition-colors">Открытый код</a></li>
+                <li><a href="#" className="hover:text-video-pink transition-colors">Модерация</a></li>
+                <li><a href="#" className="hover:text-video-pink transition-colors">Поддержка</a></li>
+              </ul>
+            </div>
+          </div>
+          <div className="border-t border-gray-200 mt-8 pt-8 flex items-center justify-between">
+            <p className="text-sm text-gray-500">
+              © 2024 VideoHub. Все права защищены.
+            </p>
+            <div className="flex space-x-6">
+              <Button size="sm" variant="ghost" className="text-gray-500 hover:text-video-pink">
+                <Icon name="Twitter" size={16} />
+              </Button>
+              <Button size="sm" variant="ghost" className="text-gray-500 hover:text-video-pink">
+                <Icon name="Instagram" size={16} />
+              </Button>
+              <Button size="sm" variant="ghost" className="text-gray-500 hover:text-video-pink">
+                <Icon name="Youtube" size={16} />
+              </Button>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
