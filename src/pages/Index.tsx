@@ -3,9 +3,26 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import Icon from "@/components/ui/icon";
+import { useState } from "react";
 
 const Index = () => {
+  const [likedVideos, setLikedVideos] = useState<Set<number>>(new Set());
+  const [selectedVideo, setSelectedVideo] = useState<any>(null);
+
+  const toggleLike = (videoId: number) => {
+    setLikedVideos(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(videoId)) {
+        newSet.delete(videoId);
+      } else {
+        newSet.add(videoId);
+      }
+      return newSet;
+    });
+  };
+
   const trendingVideos = [
     {
       id: 1,
@@ -15,7 +32,9 @@ const Index = () => {
       avatar: "/img/d69eef61-20c6-41a3-bf87-685c09b80384.jpg",
       views: "2.1M",
       duration: "0:15",
-      likes: "150K"
+      likes: "150K",
+      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      platform: "TikTok"
     },
     {
       id: 2,
@@ -25,7 +44,9 @@ const Index = () => {
       avatar: "/img/d69eef61-20c6-41a3-bf87-685c09b80384.jpg",
       views: "890K",
       duration: "12:34",
-      likes: "45K"
+      likes: "45K",
+      videoUrl: "https://www.youtube.com/embed/jNQXAC9IVRw",
+      platform: "YouTube"
     },
     {
       id: 3,
@@ -35,7 +56,9 @@ const Index = () => {
       avatar: "/img/d69eef61-20c6-41a3-bf87-685c09b80384.jpg",
       views: "3.5M",
       duration: "0:30",
-      likes: "280K"
+      likes: "280K",
+      videoUrl: "https://www.youtube.com/embed/L_jWHffIx5E",
+      platform: "TikTok"
     },
     {
       id: 4,
@@ -45,7 +68,9 @@ const Index = () => {
       avatar: "/img/d69eef61-20c6-41a3-bf87-685c09b80384.jpg",
       views: "1.2M",
       duration: "8:45",
-      likes: "92K"
+      likes: "92K",
+      videoUrl: "https://www.youtube.com/embed/ScMzIvxBSi4",
+      platform: "YouTube"
     }
   ];
 
@@ -91,7 +116,7 @@ const Index = () => {
                 <Icon name="Plus" size={18} className="mr-2" />
                 Создать
               </Button>
-              <Avatar className="w-10 h-10 ring-2 ring-video-pink/20">
+              <Avatar className="w-10 h-10 ring-2 ring-video-pink/20 cursor-pointer hover:ring-video-pink/40 transition-all">
                 <AvatarImage src="/img/d69eef61-20c6-41a3-bf87-685c09b80384.jpg" />
                 <AvatarFallback>Я</AvatarFallback>
               </Avatar>
@@ -107,7 +132,7 @@ const Index = () => {
             {/* Navigation */}
             <Card className="p-6">
               <nav className="space-y-3">
-                <a href="#" className="flex items-center space-x-3 p-3 rounded-lg bg-video-pink/10 text-video-pink font-medium">
+                <a href="#" className="flex items-center space-x-3 p-3 rounded-lg bg-video-pink/10 text-video-pink font-medium hover:bg-video-pink/20 transition-colors">
                   <Icon name="Home" size={20} />
                   <span>Главная</span>
                 </a>
@@ -141,7 +166,7 @@ const Index = () => {
                 {categories.map((category, index) => (
                   <button
                     key={index}
-                    className={`flex items-center space-x-3 w-full p-2 rounded-lg text-left transition-colors ${
+                    className={`flex items-center space-x-3 w-full p-2 rounded-lg text-left transition-all hover:scale-105 ${
                       category.active
                         ? 'bg-video-blue/10 text-video-blue font-medium'
                         : 'hover:bg-gray-100'
@@ -158,7 +183,7 @@ const Index = () => {
           {/* Main Content */}
           <main className="flex-1 space-y-8">
             {/* Hero Section */}
-            <div className="video-gradient rounded-3xl p-8 text-white relative overflow-hidden">
+            <div className="video-gradient rounded-3xl p-8 text-white relative overflow-hidden cursor-pointer hover:scale-[1.02] transition-transform duration-300">
               <div className="relative z-10">
                 <h2 className="text-4xl font-bold mb-4">
                   Создавай. Делись. Вдохновляй.
@@ -167,11 +192,11 @@ const Index = () => {
                   Платформа для миллионов видео из TikTok, YouTube и собственного контента
                 </p>
                 <div className="flex space-x-4">
-                  <Button className="bg-white text-video-pink font-semibold px-8 py-3 rounded-full hover:bg-gray-100 transition-colors">
+                  <Button className="bg-white text-video-pink font-semibold px-8 py-3 rounded-full hover:bg-gray-100 transition-all hover:scale-105">
                     <Icon name="Upload" size={20} className="mr-2" />
                     Загрузить видео
                   </Button>
-                  <Button variant="outline" className="border-white text-white font-semibold px-8 py-3 rounded-full hover:bg-white/10 transition-colors">
+                  <Button variant="outline" className="border-white text-white font-semibold px-8 py-3 rounded-full hover:bg-white/10 transition-all hover:scale-105">
                     <Icon name="Play" size={20} className="mr-2" />
                     Смотреть тренды
                   </Button>
@@ -185,7 +210,7 @@ const Index = () => {
             <section>
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold text-gray-900">🔥 Трендовые видео</h2>
-                <Button variant="outline" className="font-medium">
+                <Button variant="outline" className="font-medium hover:scale-105 transition-transform">
                   Смотреть все
                   <Icon name="ArrowRight" size={16} className="ml-2" />
                 </Button>
@@ -194,31 +219,84 @@ const Index = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
                 {trendingVideos.map((video) => (
                   <Card key={video.id} className="video-card-hover cursor-pointer group">
-                    <div className="relative overflow-hidden rounded-t-lg">
-                      <img
-                        src={video.thumbnail}
-                        alt={video.title}
-                        className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
-                      <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                        <div className="w-16 h-16 video-gradient rounded-full flex items-center justify-center">
-                          <Icon name="Play" size={24} className="text-white ml-1" />
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <div className="relative overflow-hidden rounded-t-lg" onClick={() => setSelectedVideo(video)}>
+                          <img
+                            src={video.thumbnail}
+                            alt={video.title}
+                            className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                          />
+                          <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <div className="w-16 h-16 video-gradient rounded-full flex items-center justify-center transform group-hover:scale-110 transition-transform">
+                              <Icon name="Play" size={24} className="text-white ml-1" />
+                            </div>
+                          </div>
+                          <Badge className="absolute top-3 left-3 bg-video-pink text-white border-0 font-semibold">
+                            {video.platform}
+                          </Badge>
+                          <Badge className="absolute top-3 right-3 bg-black/70 text-white border-0">
+                            {video.duration}
+                          </Badge>
                         </div>
-                      </div>
-                      <Badge className="absolute top-3 right-3 bg-black/70 text-white border-0">
-                        {video.duration}
-                      </Badge>
-                    </div>
+                      </DialogTrigger>
+                      <DialogContent className="max-w-4xl w-full">
+                        <DialogHeader>
+                          <DialogTitle className="text-left">{selectedVideo?.title}</DialogTitle>
+                        </DialogHeader>
+                        <div className="aspect-video w-full">
+                          <iframe
+                            src={selectedVideo?.videoUrl}
+                            className="w-full h-full rounded-lg"
+                            allowFullScreen
+                            title={selectedVideo?.title}
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          ></iframe>
+                        </div>
+                        <div className="flex items-center justify-between pt-4">
+                          <div className="flex items-center space-x-3">
+                            <Avatar className="w-12 h-12">
+                              <AvatarImage src={selectedVideo?.avatar} />
+                              <AvatarFallback>{selectedVideo?.author?.[0]}</AvatarFallback>
+                            </Avatar>
+                            <div>
+                              <p className="font-semibold text-lg">{selectedVideo?.author}</p>
+                              <p className="text-sm text-gray-500">{selectedVideo?.views} просмотров</p>
+                            </div>
+                          </div>
+                          <div className="flex space-x-3">
+                            <Button
+                              onClick={() => selectedVideo && toggleLike(selectedVideo.id)}
+                              variant={likedVideos.has(selectedVideo?.id) ? "default" : "outline"}
+                              size="lg"
+                              className={`transition-all hover:scale-105 ${
+                                likedVideos.has(selectedVideo?.id) ? "video-gradient text-white" : ""
+                              }`}
+                            >
+                              <Icon name="Heart" size={18} className="mr-2" />
+                              {selectedVideo?.likes}
+                            </Button>
+                            <Button variant="outline" size="lg" className="transition-all hover:scale-105">
+                              <Icon name="Share2" size={18} className="mr-2" />
+                              Поделиться
+                            </Button>
+                            <Button variant="outline" size="lg" className="transition-all hover:scale-105">
+                              <Icon name="Bookmark" size={18} />
+                            </Button>
+                          </div>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
                     <CardContent className="p-4">
                       <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-video-pink transition-colors">
                         {video.title}
                       </h3>
                       <div className="flex items-center space-x-3 mb-3">
-                        <Avatar className="w-8 h-8">
+                        <Avatar className="w-8 h-8 cursor-pointer hover:ring-2 hover:ring-video-pink/30 transition-all">
                           <AvatarImage src={video.avatar} />
                           <AvatarFallback>{video.author[0]}</AvatarFallback>
                         </Avatar>
-                        <span className="text-sm font-medium text-gray-700">{video.author}</span>
+                        <span className="text-sm font-medium text-gray-700 hover:text-video-pink cursor-pointer transition-colors">{video.author}</span>
                       </div>
                       <div className="flex items-center justify-between text-sm text-gray-500">
                         <div className="flex items-center space-x-4">
@@ -226,16 +304,24 @@ const Index = () => {
                             <Icon name="Eye" size={14} className="mr-1" />
                             {video.views}
                           </span>
-                          <span className="flex items-center">
-                            <Icon name="Heart" size={14} className="mr-1" />
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleLike(video.id);
+                            }}
+                            className={`flex items-center transition-all hover:scale-110 transform duration-200 ${
+                              likedVideos.has(video.id) ? 'text-video-pink' : 'text-gray-500 hover:text-video-pink'
+                            }`}
+                          >
+                            <Icon name="Heart" size={14} className={`mr-1 ${likedVideos.has(video.id) ? 'fill-current' : ''}`} />
                             {video.likes}
-                          </span>
+                          </button>
                         </div>
                         <div className="flex space-x-2">
-                          <Button size="sm" variant="ghost" className="text-gray-500 hover:text-video-pink">
+                          <Button size="sm" variant="ghost" className="text-gray-500 hover:text-video-pink transition-all hover:scale-110">
                             <Icon name="Share2" size={14} />
                           </Button>
-                          <Button size="sm" variant="ghost" className="text-gray-500 hover:text-video-pink">
+                          <Button size="sm" variant="ghost" className="text-gray-500 hover:text-video-blue transition-all hover:scale-110">
                             <Icon name="Bookmark" size={14} />
                           </Button>
                         </div>
@@ -247,23 +333,23 @@ const Index = () => {
             </section>
 
             {/* Upload Section */}
-            <Card className="p-8 border-2 border-dashed border-gray-300 bg-gray-50/50">
+            <Card className="p-8 border-2 border-dashed border-gray-300 bg-gray-50/50 hover:border-video-pink hover:bg-video-pink/5 transition-all cursor-pointer group">
               <div className="text-center">
-                <div className="w-16 h-16 video-gradient rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 video-gradient rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
                   <Icon name="Upload" size={24} className="text-white" />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-video-pink transition-colors">
                   Загрузите своё первое видео
                 </h3>
                 <p className="text-gray-600 mb-6 max-w-md mx-auto">
                   Поделитесь своим творчеством с миллионами зрителей. Поддерживаются форматы MP4, MOV, AVI
                 </p>
                 <div className="flex justify-center space-x-4">
-                  <Button className="video-gradient text-white font-semibold px-8 py-3 rounded-full">
+                  <Button className="video-gradient text-white font-semibold px-8 py-3 rounded-full hover:scale-105 transition-transform">
                     <Icon name="Upload" size={18} className="mr-2" />
                     Выбрать файл
                   </Button>
-                  <Button variant="outline" className="font-medium px-8 py-3 rounded-full">
+                  <Button variant="outline" className="font-medium px-8 py-3 rounded-full hover:scale-105 transition-transform">
                     <Icon name="Video" size={18} className="mr-2" />
                     Записать видео
                   </Button>
@@ -294,28 +380,28 @@ const Index = () => {
             <div>
               <h4 className="font-semibold text-gray-900 mb-3">Создателям</h4>
               <ul className="space-y-2 text-sm text-gray-600">
-                <li><a href="#" className="hover:text-video-pink transition-colors">Загрузить видео</a></li>
-                <li><a href="#" className="hover:text-video-pink transition-colors">Аналитика</a></li>
-                <li><a href="#" className="hover:text-video-pink transition-colors">Монетизация</a></li>
-                <li><a href="#" className="hover:text-video-pink transition-colors">Сообщество</a></li>
+                <li><a href="#" className="hover:text-video-pink transition-colors cursor-pointer">Загрузить видео</a></li>
+                <li><a href="#" className="hover:text-video-pink transition-colors cursor-pointer">Аналитика</a></li>
+                <li><a href="#" className="hover:text-video-pink transition-colors cursor-pointer">Монетизация</a></li>
+                <li><a href="#" className="hover:text-video-pink transition-colors cursor-pointer">Сообщество</a></li>
               </ul>
             </div>
             <div>
               <h4 className="font-semibold text-gray-900 mb-3">Зрителям</h4>
               <ul className="space-y-2 text-sm text-gray-600">
-                <li><a href="#" className="hover:text-video-pink transition-colors">Тренды</a></li>
-                <li><a href="#" className="hover:text-video-pink transition-colors">Подписки</a></li>
-                <li><a href="#" className="hover:text-video-pink transition-colors">Плейлисты</a></li>
-                <li><a href="#" className="hover:text-video-pink transition-colors">Рекомендации</a></li>
+                <li><a href="#" className="hover:text-video-pink transition-colors cursor-pointer">Тренды</a></li>
+                <li><a href="#" className="hover:text-video-pink transition-colors cursor-pointer">Подписки</a></li>
+                <li><a href="#" className="hover:text-video-pink transition-colors cursor-pointer">Плейлисты</a></li>
+                <li><a href="#" className="hover:text-video-pink transition-colors cursor-pointer">Рекомендации</a></li>
               </ul>
             </div>
             <div>
               <h4 className="font-semibold text-gray-900 mb-3">Безопасность</h4>
               <ul className="space-y-2 text-sm text-gray-600">
-                <li><a href="#" className="hover:text-video-pink transition-colors">Защита данных</a></li>
-                <li><a href="#" className="hover:text-video-pink transition-colors">Открытый код</a></li>
-                <li><a href="#" className="hover:text-video-pink transition-colors">Модерация</a></li>
-                <li><a href="#" className="hover:text-video-pink transition-colors">Поддержка</a></li>
+                <li><a href="#" className="hover:text-video-pink transition-colors cursor-pointer">Защита данных</a></li>
+                <li><a href="#" className="hover:text-video-pink transition-colors cursor-pointer">Открытый код</a></li>
+                <li><a href="#" className="hover:text-video-pink transition-colors cursor-pointer">Модерация</a></li>
+                <li><a href="#" className="hover:text-video-pink transition-colors cursor-pointer">Поддержка</a></li>
               </ul>
             </div>
           </div>
@@ -324,13 +410,13 @@ const Index = () => {
               © 2024 VideoHub. Все права защищены.
             </p>
             <div className="flex space-x-6">
-              <Button size="sm" variant="ghost" className="text-gray-500 hover:text-video-pink">
+              <Button size="sm" variant="ghost" className="text-gray-500 hover:text-video-pink transition-all hover:scale-110">
                 <Icon name="Twitter" size={16} />
               </Button>
-              <Button size="sm" variant="ghost" className="text-gray-500 hover:text-video-pink">
+              <Button size="sm" variant="ghost" className="text-gray-500 hover:text-video-pink transition-all hover:scale-110">
                 <Icon name="Instagram" size={16} />
               </Button>
-              <Button size="sm" variant="ghost" className="text-gray-500 hover:text-video-pink">
+              <Button size="sm" variant="ghost" className="text-gray-500 hover:text-video-pink transition-all hover:scale-110">
                 <Icon name="Youtube" size={16} />
               </Button>
             </div>
