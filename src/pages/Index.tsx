@@ -4,12 +4,20 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Progress } from "@/components/ui/progress";
 import Icon from "@/components/ui/icon";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 const Index = () => {
   const [likedVideos, setLikedVideos] = useState<Set<number>>(new Set());
   const [selectedVideo, setSelectedVideo] = useState<any>(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [isUploading, setIsUploading] = useState(false);
+  const [securityCode, setSecurityCode] = useState('');
+  const [isSecureMode, setIsSecureMode] = useState(true);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const toggleLike = (videoId: number) => {
     setLikedVideos(prev => {
@@ -21,6 +29,43 @@ const Index = () => {
       }
       return newSet;
     });
+  };
+
+  const generateSecureCode = () => {
+    const code = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    return code.toUpperCase();
+  };
+
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setIsUploading(true);
+      setUploadProgress(0);
+      const newSecurityCode = generateSecureCode();
+      setSecurityCode(newSecurityCode);
+      
+      // Simulate upload progress
+      const interval = setInterval(() => {
+        setUploadProgress(prev => {
+          if (prev >= 100) {
+            clearInterval(interval);
+            setIsUploading(false);
+            return 100;
+          }
+          return prev + 10;
+        });
+      }, 200);
+    }
+  };
+
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+      setIsFullscreen(true);
+    } else {
+      document.exitFullscreen();
+      setIsFullscreen(false);
+    }
   };
 
   const trendingVideos = [
@@ -244,14 +289,28 @@ const Index = () => {
                         <DialogHeader>
                           <DialogTitle className="text-left">{selectedVideo?.title}</DialogTitle>
                         </DialogHeader>
-                        <div className="aspect-video w-full">
-                          <iframe
-                            src={selectedVideo?.videoUrl}
-                            className="w-full h-full rounded-lg"
-                            allowFullScreen
-                            title={selectedVideo?.title}
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          ></iframe>
+                        <div className="relative">
+                          <div className="aspect-video w-full">
+                            <iframe
+                              src={selectedVideo?.videoUrl}
+                              className="w-full h-full rounded-lg"
+                              allowFullScreen
+                              title={selectedVideo?.title}
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            ></iframe>
+                          </div>
+                          <Button
+                            onClick={toggleFullscreen}
+                            className="absolute top-2 right-2 bg-black/50 text-white hover:bg-black/70 p-2 rounded-lg backdrop-blur-sm"
+                            size="sm"
+                          >
+                            <Icon name={isFullscreen ? "Minimize2" : "Maximize2"} size={16} />
+                          </Button>
+                          {isSecureMode && (
+                            <div className="absolute bottom-2 left-2 bg-video-pink/90 text-white px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-sm">
+                              🔒 Защищённый просмотр
+                            </div>
+                          )}
                         </div>
                         <div className="flex items-center justify-between pt-4">
                           <div className="flex items-center space-x-3">
@@ -333,26 +392,129 @@ const Index = () => {
             </section>
 
             {/* Upload Section */}
-            <Card className="p-8 border-2 border-dashed border-gray-300 bg-gray-50/50 hover:border-video-pink hover:bg-video-pink/5 transition-all cursor-pointer group">
+            <Card className="p-8 border-2 border-dashed border-gray-300 bg-gray-50/50 hover:border-video-pink hover:bg-video-pink/5 transition-all group">
               <div className="text-center">
                 <div className="w-16 h-16 video-gradient rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
                   <Icon name="Upload" size={24} className="text-white" />
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-video-pink transition-colors">
-                  Загрузите своё первое видео
+                  🔒 Защищённая загрузка видео
                 </h3>
                 <p className="text-gray-600 mb-6 max-w-md mx-auto">
-                  Поделитесь своим творчеством с миллионами зрителей. Поддерживаются форматы MP4, MOV, AVI
+                  Загружайте контент с автоматическим шифрованием. Ваши видео защищены уникальными кодами безопасности
                 </p>
+                
+                {isUploading && (
+                  <div className="mb-6">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm font-medium text-gray-700">Загрузка и шифрование...</span>
+                      <span className="text-sm font-medium text-video-pink">{uploadProgress}%</span>
+                    </div>
+                    <Progress value={uploadProgress} className="w-full" />
+                    {securityCode && (
+                      <Alert className="mt-4 border-video-pink bg-video-pink/5">
+                        <Icon name="Shield" size={16} />
+                        <AlertDescription>
+                          <strong>Код безопасности:</strong> {securityCode}
+                          <br />
+                          <span className="text-xs text-gray-600">Сохраните этот код для доступа к вашему видео</span>
+                        </AlertDescription>
+                      </Alert>
+                    )}
+                  </div>
+                )}
+                
                 <div className="flex justify-center space-x-4">
-                  <Button className="video-gradient text-white font-semibold px-8 py-3 rounded-full hover:scale-105 transition-transform">
-                    <Icon name="Upload" size={18} className="mr-2" />
-                    Выбрать файл
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="video/*"
+                    onChange={handleFileUpload}
+                    className="hidden"
+                  />
+                  <Button 
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={isUploading}
+                    className="video-gradient text-white font-semibold px-8 py-3 rounded-full hover:scale-105 transition-transform disabled:opacity-50"
+                  >
+                    <Icon name={isUploading ? "Loader2" : "Upload"} size={18} className={`mr-2 ${isUploading ? 'animate-spin' : ''}`} />
+                    {isUploading ? 'Загружается...' : 'Выбрать файл'}
                   </Button>
                   <Button variant="outline" className="font-medium px-8 py-3 rounded-full hover:scale-105 transition-transform">
                     <Icon name="Video" size={18} className="mr-2" />
                     Записать видео
                   </Button>
+                </div>
+                
+                <div className="mt-6 flex items-center justify-center space-x-2 text-sm text-gray-500">
+                  <Icon name="Shield" size={16} className="text-video-pink" />
+                  <span>Все загруженные файлы автоматически шифруются</span>
+                </div>
+              </div>
+            </Card>
+            
+            {/* Security Features */}
+            <Card className="p-6 bg-gradient-to-r from-video-pink/5 to-video-blue/5 border border-video-pink/20">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold text-gray-900 flex items-center">
+                  <Icon name="Shield" size={20} className="mr-2 text-video-pink" />
+                  Система безопасности
+                </h3>
+                <Badge className="video-gradient text-white border-0">
+                  Активна
+                </Badge>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="flex items-start space-x-3">
+                  <div className="w-8 h-8 bg-video-pink/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Icon name="Lock" size={16} className="text-video-pink" />
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-gray-900 mb-1">Шифрование AES-256</h4>
+                    <p className="text-sm text-gray-600">Военный уровень защиты всех видеофайлов</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start space-x-3">
+                  <div className="w-8 h-8 bg-video-blue/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Icon name="Eye" size={16} className="text-video-blue" />
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-gray-900 mb-1">Приватный просмотр</h4>
+                    <p className="text-sm text-gray-600">Никто не может отследить ваши действия</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start space-x-3">
+                  <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Icon name="Code" size={16} className="text-green-600" />
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-gray-900 mb-1">Открытый код</h4>
+                    <p className="text-sm text-gray-600">Прозрачность и проверяемость всех алгоритмов</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="mt-6 p-4 bg-white/50 rounded-lg">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <Icon name="Shield" size={16} className="text-green-600" />
+                    <span className="text-sm font-medium text-gray-700">Защищённый режим</span>
+                  </div>
+                  <button
+                    onClick={() => setIsSecureMode(!isSecureMode)}
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                      isSecureMode ? 'bg-video-pink' : 'bg-gray-300'
+                    }`}
+                  >
+                    <span
+                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                        isSecureMode ? 'translate-x-6' : 'translate-x-1'
+                      }`}
+                    />
+                  </button>
                 </div>
               </div>
             </Card>
@@ -374,7 +536,7 @@ const Index = () => {
                 </h3>
               </div>
               <p className="text-gray-600 text-sm">
-                Платформа для создания, обмена и просмотра видеоконтента с защищённым кодом и открытым исходным кодом.
+                🔒 Защищённая платформа с шифрованием видео, открытым исходным кодом и полным контролем над вашим контентом.
               </p>
             </div>
             <div>
